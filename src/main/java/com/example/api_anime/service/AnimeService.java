@@ -50,5 +50,10 @@ public class AnimeService {
 
     }
 
+    public String deleteAnimeById(Long id) {
+        animeRepository.deleteById(id);
+        return "Anime eliminado con exito";
+    }
+
 
 }
