@@ -33,4 +33,13 @@ public class AnimeController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAnimePorId(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(animeService.deleteAnimeById(id), HttpStatus.OK);
+        }catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
