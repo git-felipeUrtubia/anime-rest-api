@@ -28,6 +28,9 @@ public class Anime {
     @Column(nullable = false)
     private String image;
 
+    @Enumerated(EnumType.STRING)
+    private TypeAnime tipo;
+
     @JsonManagedReference("anime-temporadas")
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "anime")
     Set<Temporada> temporadas = new HashSet<>();

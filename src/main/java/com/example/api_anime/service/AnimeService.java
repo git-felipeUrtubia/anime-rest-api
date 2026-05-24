@@ -24,12 +24,14 @@ public class AnimeService {
         Anime anime = animeRepository.save(Anime.builder()
                     .name(req.name())
                     .image(req.image())
+                    .tipo(req.tipo())
                 .build());
 
         return new AnimeResDTO(
                 anime.getId(),
                 anime.getName(),
                 anime.getImage(),
+                anime.getTipo(),
                 anime.getTemporadas()
         );
 
@@ -42,6 +44,7 @@ public class AnimeService {
                         anime.getId(),
                         anime.getName(),
                         anime.getImage(),
+                        anime.getTipo(),
                         anime.getTemporadas()
                 )).toList();
 
