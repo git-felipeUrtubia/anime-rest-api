@@ -71,4 +71,17 @@ public class EpisodioService {
                 )).toList();
     }
 
+    public List<EpisodioResDTO> listarEpisodiosPorTemporada(Long anime_id, int nro_temporada) {
+
+        return episodioRepository.findByTemporada(anime_id, nro_temporada).stream()
+                .map(ep -> new EpisodioResDTO(
+                        ep.getId(),
+                        ep.getTitle(),
+                        ep.getNro_episodio(),
+                        ep.getUri(),
+                        ep.getTemporada().getNro_temporada(),
+                        ep.getTemporada().getAnime().getId()
+                )).toList();
+    }
+
 }

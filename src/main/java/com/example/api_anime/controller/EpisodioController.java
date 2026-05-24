@@ -34,4 +34,13 @@ public class EpisodioController {
         }
     }
 
+    @GetMapping("/{id_anime}/{nro_temporada}")
+    public ResponseEntity<?> listarEpisodioByTemporada(@PathVariable Long id_anime, @PathVariable int nro_temporada) {
+        try {
+            return new ResponseEntity<>(episodioService.listarEpisodiosPorTemporada(id_anime, nro_temporada), HttpStatus.OK);
+        }catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
