@@ -2,6 +2,7 @@ package com.example.api_anime.service;
 
 import com.example.api_anime.dto.req.AnimeReqDTO;
 import com.example.api_anime.dto.res.AnimeResDTO;
+import com.example.api_anime.dto.res.DataOnlyAnimeResDTO;
 import com.example.api_anime.model.Anime;
 import com.example.api_anime.repository.AnimeRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,17 @@ public class AnimeService {
 
     }
 
-    public List<AnimeResDTO> listarAnimes() {
+    public List<DataOnlyAnimeResDTO> listarAnimes() {
+        return animeRepository.findAll().stream()
+                .map(anime -> new DataOnlyAnimeResDTO(
+                        anime.getId(),
+                        anime.getName(),
+                        anime.getImage(),
+                        anime.getTipo()
+                )).toList();
+    }
+
+    public List<AnimeResDTO> listarAnimesTest() {
 
         return animeRepository.findAll().stream()
                 .map(anime -> new AnimeResDTO(
