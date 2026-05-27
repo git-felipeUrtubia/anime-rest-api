@@ -33,6 +33,15 @@ public class AnimeController {
         }
     }
 
+    @GetMapping("/listar-test-anime")
+    public ResponseEntity<?> listarAnimesTest() {
+        try {
+            return new ResponseEntity<>(animeService.listarAnimesTest(), HttpStatus.OK);
+        }catch (Exception ex){
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAnimePorId(@PathVariable Long id) {
         try {

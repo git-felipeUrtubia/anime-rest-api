@@ -43,4 +43,22 @@ public class EpisodioController {
         }
     }
 
+    @PostMapping("/sincronizar")
+    public ResponseEntity<String> sincronizarEpisodios(
+            @RequestParam Long animeId,
+            @RequestParam int nroTemp,
+            @RequestParam String libraryId,
+            @RequestParam String collectionId,
+            @RequestHeader("X-Bunny-Key") String apiKey) {
+
+        try {
+            episodioService.sincronizarEpisodio(animeId, nroTemp, libraryId, collectionId, apiKey);
+            return ResponseEntity.ok("Sincronización masiva completada con éxito. Episodios guardados.");
+        } catch (RuntimeException e) {
+            // Manejo de error por si no encuentra el anime, la temporada o falla Bunny
+            return ResponseEntity.badRequest().body("Error en la sincronización: " + e.getMessage());
+        }
+    }
+
+
 }
