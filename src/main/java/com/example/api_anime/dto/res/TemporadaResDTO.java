@@ -7,15 +7,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Set;
 
 @JsonPropertyOrder({
-        "id",
+        "id_temporada",
         "nro_temporada",
-        "name_anime",
-        "episodios"
+        "id_anime"
 })
 public record TemporadaResDTO(
-        Long id,
+        Long id_temporada,
         int nro_temporada,
-        String name_anime,
-        Set<Episodio> episodios
+        Long id_anime
 ) {
 }
