@@ -44,8 +44,7 @@ public class TemporadaService {
         return new TemporadaResDTO(
                 temp.getId(),
                 temp.getNro_temporada(),
-                temp.getAnime().getName(),
-                temp.getEpisodios()
+                temp.getAnime().getId()
         );
 
     }
@@ -55,9 +54,21 @@ public class TemporadaService {
                 .map(temp -> new TemporadaResDTO(
                         temp.getId(),
                         temp.getNro_temporada(),
-                        temp.getAnime().getName(),
-                        temp.getEpisodios()
+                        temp.getAnime().getId()
                 )).toList();
+    }
+
+    public List<TemporadaResDTO> listarTemporadasPorAnime(Long anime_id) {
+
+        Anime anime = animeRepository.findById(anime_id).orElseThrow(() -> new RuntimeException("Anime no encontrado con ID: " + anime_id));
+
+        return anime.getTemporadas().stream()
+                .map(t -> new TemporadaResDTO(
+                        t.getId(),
+                        t.getNro_temporada(),
+                        t.getAnime().getId()
+                )).toList();
+
     }
 
 }

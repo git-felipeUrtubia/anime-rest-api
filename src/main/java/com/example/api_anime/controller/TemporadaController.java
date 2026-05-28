@@ -32,4 +32,13 @@ public class TemporadaController {
         }
     }
 
+    @GetMapping("/by_anime")
+    public ResponseEntity<?> listarTemporadasPorAnime(@RequestParam Long anime_id) {
+        try {
+            return new ResponseEntity<>(temporadaService.listarTemporadasPorAnime(anime_id), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
