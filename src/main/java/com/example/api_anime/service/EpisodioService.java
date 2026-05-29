@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -121,6 +122,8 @@ public class EpisodioService {
                     .temporada(temp)
                     .build());
         });
+
+        newEp.sort(Comparator.comparingInt( Episodio::getNro_episodio ));
 
         episodioRepository.saveAll(newEp);
 
