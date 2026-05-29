@@ -62,13 +62,13 @@ public class BunnyService {
     }
 
     public List<String> getVideosGuids(Long libraryId, String collectionId, String bunnyKey) {
-        List<String> todosLosGuids = new java.util.ArrayList<>();
+        List<Map<String, Object>> todosLosItems = new java.util.ArrayList<>();
         HttpHeaders headers = new HttpHeaders();
         headers.set("accept", "application/json");
         headers.set("AccessKey", bunnyKey);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        // Hacemos un bucle para traer la página 1 y la página 2 de la API de Bunny
+        // 1. Traemos los items de las páginas
         for (int pagina = 1; pagina <= 2; pagina++) {
             String url = "https://video.bunnycdn.com/library/" + libraryId
                     + "/videos?page=" + pagina + "&perPage=100&collection=" + collectionId;
@@ -77,15 +77,23 @@ public class BunnyService {
                 if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                     List<Map<String, Object>> items = (List<Map<String, Object>>) response.getBody().get("items");
                     if (items != null) {
-                        items.stream()
-                                .map(item -> (String) item.get("guid"))
-                                .forEach(todosLosGuids::add);
+                        todosLosItems.addAll(items);
                     }
                 }
             } catch (Exception e) {
                 System.err.println("Error en página " + pagina + ": " + e.getMessage());
             }
         }
-        return todosLosGuids;
+
+        // 2. ¡AQUÍ ESTÁ LA MAGIA!: Ordenamos la lista alfabéticamente por el campo "title"
+        // Esto asegura que "Episodio 001" (o el nombre original viejo) vaya antes que "Episodio 002"
+        return todosLosItems.stream()
+                .sorted((item1, item2) -> {
+                    String title1 = (String) item1.getOrDefault("title", "");
+                    String title2 = (String) item2.getOrDefault("title", "");
+                    return title1.compareToIgnoreCase(title2);
+                })
+                .map(item -> (String) item.get("guid")) // Una vez ordenados, extraemos solo el GUID
+                .collect(Collectors.toList());
     }
 }
