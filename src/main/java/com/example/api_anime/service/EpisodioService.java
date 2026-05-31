@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Service
@@ -112,7 +113,10 @@ public class EpisodioService {
 
             System.out.println("TituloVideo: " + titleVideo);
 
-            int nroEpVideo = Integer.parseInt(titleVideo.replace("Episodio ", "").trim());
+            int nroEpVideo = IntStream.range(0, videosBunny.size())
+                    .filter(i -> videosBunny.get(i).getGuid().equals(video.getGuid()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("GUID " + video.getGuid() + " no existe"));
             String uriM3u8 = "https://vz-0ce7c9d0-8e0.b-cdn.net/" + video.getGuid() + "/playlist.m3u8";
 
             newEp.add(Episodio.builder()
