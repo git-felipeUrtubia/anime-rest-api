@@ -94,10 +94,14 @@ public class EpisodioService {
 
     public void sincronizarEpisodio(Long animeId, int nro_temp, String libraryId, String collectionId, String apiKey) {
         List<BunnyVideoResponse> videosBunny = bunnyClientService.listarVideos(libraryId, collectionId, apiKey);
-        Collections.reverse(videosBunny);
+
         if (videosBunny.isEmpty()) {
             throw new RuntimeException("No se encontraron videos en la colección de Bunny.net");
         }
+
+        List<BunnyVideoResponse> videosBunnyMutable = new ArrayList<>(videosBunny);
+
+        Collections.reverse(videosBunnyMutable);
 
         List<Episodio> newEp = new ArrayList<>();
 
@@ -109,14 +113,14 @@ public class EpisodioService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Numero de temporada no encontrada"));
 
-        videosBunny.forEach(video -> {
+        videosBunnyMutable.forEach(video -> {
 
             String titleVideo = video.getTitle();
 
             System.out.println("TituloVideo: " + titleVideo);
 
-            int nroEpVideo = IntStream.range(0, videosBunny.size())
-                    .filter(i -> videosBunny.get(i).getGuid().equals(video.getGuid()))
+            int nroEpVideo = IntStream.range(0, videosBunnyMutable.size())
+                    .filter(i -> videosBunnyMutable.get(i).getGuid().equals(video.getGuid()))
                     .findFirst()
                     .orElseThrow(() -> new RuntimeException("GUID " + video.getGuid() + " no existe"));
             String uriM3u8 = "https://vz-0ce7c9d0-8e0.b-cdn.net/" + video.getGuid() + "/playlist.m3u8";
