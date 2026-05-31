@@ -99,9 +99,12 @@ public class EpisodioService {
             throw new RuntimeException("No se encontraron videos en la colección de Bunny.net");
         }
 
+        // 1. Creamos la lista mutable
         List<BunnyVideoResponse> videosBunnyMutable = new ArrayList<>(videosBunny);
 
-        Collections.reverse(videosBunnyMutable);
+        // 2. LA MAGIA: En lugar de invertirla, la ORDENAMOS alfabéticamente por el título.
+        // Al ordenar por título ("01", "02", "10", etc.), nos aseguramos del orden correcto.
+        videosBunnyMutable.sort(Comparator.comparing(BunnyVideoResponse::getTitle));
 
         List<Episodio> newEp = new ArrayList<>();
 
