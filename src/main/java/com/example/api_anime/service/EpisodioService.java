@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Service
@@ -79,14 +80,18 @@ public class EpisodioService {
     public List<EpisodioResDTO> listarEpisodiosPorTemporada(Long anime_id, int nro_temporada) {
 
         return episodioRepository.findByTemporada(anime_id, nro_temporada).stream()
-                .map(ep -> new EpisodioResDTO(
-                        ep.getId(),
-                        ep.getTitle(),
-                        ep.getNro_episodio(),
-                        ep.getUri(),
-                        ep.getTemporada().getNro_temporada(),
-                        ep.getTemporada().getAnime().getId()
-                )).toList();
+                .map(ep -> {
+                    ep.setTitle("Episodio " + ep.getNro_episodio());
+
+                    return new EpisodioResDTO(
+                            ep.getId(),
+                            ep.getTitle(),
+                            ep.getNro_episodio(),
+                            ep.getUri(),
+                            ep.getTemporada().getNro_temporada(),
+                            ep.getTemporada().getAnime().getId()
+                    );
+                }).toList();
     }
 
     public void sincronizarEpisodio(Long animeId, int nro_temp, String libraryId, String collectionId, String apiKey) {
@@ -112,12 +117,15 @@ public class EpisodioService {
 
             System.out.println("TituloVideo: " + titleVideo);
 
-            int nroEpVideo = Integer.parseInt(titleVideo.replace("Episodio ", "").trim());
+            int nroEpVideo = IntStream.range(0, videosBunny.size())
+                    .filter(i -> videosBunny.get(i).getGuid().equals(video.getGuid()))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("GUID " + video.getGuid() + " no existe"));
             String uriM3u8 = "https://vz-0ce7c9d0-8e0.b-cdn.net/" + video.getGuid() + "/playlist.m3u8";
 
             newEp.add(Episodio.builder()
                     .title(titleVideo)
-                    .nro_episodio(nroEpVideo)
+                    .nro_episodio(nroEpVideo + 1)
                     .uri(uriM3u8)
                     .temporada(temp)
                     .build());
