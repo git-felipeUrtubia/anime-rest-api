@@ -80,14 +80,18 @@ public class EpisodioService {
     public List<EpisodioResDTO> listarEpisodiosPorTemporada(Long anime_id, int nro_temporada) {
 
         return episodioRepository.findByTemporada(anime_id, nro_temporada).stream()
-                .map(ep -> new EpisodioResDTO(
-                        ep.getId(),
-                        ep.getTitle(),
-                        ep.getNro_episodio(),
-                        ep.getUri(),
-                        ep.getTemporada().getNro_temporada(),
-                        ep.getTemporada().getAnime().getId()
-                )).toList();
+                .map(ep -> {
+                    ep.setTitle("Episodio " + ep.getNro_episodio());
+
+                    return new EpisodioResDTO(
+                            ep.getId(),
+                            ep.getTitle(),
+                            ep.getNro_episodio(),
+                            ep.getUri(),
+                            ep.getTemporada().getNro_temporada(),
+                            ep.getTemporada().getAnime().getId()
+                    );
+                }).toList();
     }
 
     public void sincronizarEpisodio(Long animeId, int nro_temp, String libraryId, String collectionId, String apiKey) {
@@ -121,7 +125,7 @@ public class EpisodioService {
 
             newEp.add(Episodio.builder()
                     .title(titleVideo)
-                    .nro_episodio(nroEpVideo)
+                    .nro_episodio(nroEpVideo + 1)
                     .uri(uriM3u8)
                     .temporada(temp)
                     .build());
