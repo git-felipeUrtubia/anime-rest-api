@@ -21,7 +21,7 @@ public class BunnyClientService {
     public List<BunnyVideoResponse> listarVideos(String libraryId, String collectionId, String apiKey) {
 
         // 1. Mapeamos la respuesta como un Mapa genérico para extraer los "items"
-        Map response = this.webClient.get()
+        Map<String, Object> response = this.webClient.get()
                 .uri("/library/{libraryId}/videos?collection={collectionId}&itemsPerPage=150", libraryId, collectionId)
                 .header("AccessKey", apiKey)
                 .retrieve()
