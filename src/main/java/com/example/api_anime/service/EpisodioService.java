@@ -13,9 +13,7 @@ import com.example.api_anime.repository.TemporadaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
@@ -96,8 +94,8 @@ public class EpisodioService {
 
     public void sincronizarEpisodio(Long animeId, int nro_temp, String libraryId, String collectionId, String apiKey) {
         List<BunnyVideoResponse> videosBunny = bunnyClientService.listarVideos(libraryId, collectionId, apiKey);
-
-        if (videosBunny == null || videosBunny.isEmpty()) {
+        Collections.reverse(videosBunny);
+        if (videosBunny.isEmpty()) {
             throw new RuntimeException("No se encontraron videos en la colección de Bunny.net");
         }
 
