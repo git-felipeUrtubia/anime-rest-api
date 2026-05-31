@@ -1,7 +1,11 @@
 # Usa la imagen oficial de Eclipse Temurin (Java 21)
 FROM eclipse-temurin:21-jdk-jammy AS build
 COPY . .
-# Ajusta según tu gestor de dependencias (Maven en este caso)
+
+# LE DA PERMISOS DE EJECUCIÓN AL WRAPPER DE MAVEN
+RUN chmod +x mvnw
+
+# Ajusta según tu gestor de dependencias
 RUN ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:21-jre-jammy
