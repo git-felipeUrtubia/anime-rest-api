@@ -18,7 +18,7 @@ public class CorsConfig {
 
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedOrigin("https://anime-rest-api-production.up.railway.app");
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
 
         corsConfiguration.setAllowCredentials(true);
 
