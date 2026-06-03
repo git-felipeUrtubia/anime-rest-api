@@ -6,6 +6,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.List;
+
 @Configuration
 public class CorsConfig {
 
@@ -16,7 +18,7 @@ public class CorsConfig {
 
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedOrigin("https://anime-rest-api-production.up.railway.app");
 
         corsConfiguration.setAllowCredentials(true);
 
