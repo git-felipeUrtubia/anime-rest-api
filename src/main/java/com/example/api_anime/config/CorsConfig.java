@@ -18,7 +18,7 @@ public class CorsConfig {
 
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173", "https://neko-app-web.vercel.app/"));
 
         corsConfiguration.setAllowCredentials(true);
 
